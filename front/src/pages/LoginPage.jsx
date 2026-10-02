@@ -62,6 +62,12 @@ export default function LoginPage() {
             {STUB_USERS.map((u) => (
               <li key={u.login}>
                 <code>{u.login}</code> / <code>{u.password}</code> → {u.role}
+                {u.role === 'client' ? (
+                  <>
+                    {' '}
+                    · id <code>{u.id}</code>
+                  </>
+                ) : null}
               </li>
             ))}
           </ul>

@@ -104,3 +104,15 @@
   3. **Admin-дашборд:** Обзор маршрутов/решений, Human-in-the-loop — ручная корректировка предложенного маршрута и сохранение изменений.
 
 * **Критерий готовности:** Интерактивный UI с client- и admin-дашбордами и stub-авторизацией, интегрированный с FastAPI бэкендом.
+
+## 4. Roadmap (после MVP)
+
+### 4.1 Severity симптомов (план)
+
+Бинарный feature-вектор (`0/1`) — MVP. Дальше — тяжесть жалоб/отклонений:
+
+- Token-normalizer / Decider LLM размечает `severity_label` (`mild|moderate|severe|critical`) и `severity ∈ [0,1]`.
+- Matcher переходит на weighted dot product; кейсы хранят severity-профиль.
+- UI показывает активные маркеры с уровнем тяжести.
+
+Детали и фазы миграции: [`back/app/routing/DECIDER_SPEC.md`](back/app/routing/DECIDER_SPEC.md) §9.

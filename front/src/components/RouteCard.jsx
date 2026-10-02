@@ -1,4 +1,5 @@
 import PriorityBadge from './PriorityBadge'
+import DocumentsPanel from './DocumentsPanel'
 
 export default function RouteCard({ route, editable = false, onChange, onSave, saving }) {
   const value = route
@@ -18,6 +19,14 @@ export default function RouteCard({ route, editable = false, onChange, onSave, s
     )
   }
 
+  const docCount = value.documents?.length || 0
+  const decision = value.decisionJson || {}
+  const vectorActive = decision.vector_active || decision.query_active || []
+  const textTokens = decision.text_tokens || []
+  const matchedPhrases = decision.matched_phrases || []
+  const tokenFilter = decision.token_filter || {}
+  const dropped = tokenFilter.dropped || []
+
   return (
     <article className="route-panel">
       <div className="route-head">
@@ -25,12 +34,64 @@ export default function RouteCard({ route, editable = false, onChange, onSave, s
           <h2>{value.patientName}</h2>
           <p className="muted">
             {value.id}
+            {value.patientId ? ` · ${value.patientId}` : ''}
             {value.age != null ? ` · ${value.age} лет` : ''}
-            {value.sourceFile ? ` · ${value.sourceFile}` : ''}
+            {docCount ? ` · ${docCount} док.` : ''}
+            {value.approved != null ? ` · ${value.approved ? 'approved' : 'pending'}` : ''}
           </p>
         </div>
         <PriorityBadge priority={value.priority} />
       </div>
+
+      {(decision.matched_case_id || vectorActive.length > 0 || textTokens.length > 0) && (
+        <section className="match-box">
+          <h3>Vector match</h3>
+          <p className="muted">
+            case <code>{decision.matched_case_id || '—'}</code>
+            {decision.matched_case_title ? ` · ${decision.matched_case_title}` : ''}
+            {' · '}
+            score={decision.match_score ?? '—'}
+            {decision.decider_source ? ` · ${decision.decider_source}` : ''}
+            {tokenFilter.source ? ` · filter=${tokenFilter.source}` : ''}
+          </p>
+          {textTokens.length > 0 && (
+            <p className="hint">
+              Токены: {textTokens.slice(0, 12).join(' · ')}
+              {textTokens.length > 12 ? '…' : ''}
+            </p>
+          )}
+          {dropped.length > 0 && (
+            <p className="hint">
+              Отброшено (норма/отрицание):{' '}
+              {dropped
+                .slice(0, 8)
+                .map((d) => d.token || d.reason)
+                .filter(Boolean)
+                .join(' · ')}
+              {dropped.length > 8 ? '…' : ''}
+            </p>
+          )}
+          {matchedPhrases.length > 0 && (
+            <p className="hint">
+              Маппинг:{' '}
+              {matchedPhrases
+                .slice(0, 10)
+                .map((m) => `${m.token}→${m.feature}`)
+                .join(' · ')}
+              {matchedPhrases.length > 10 ? '…' : ''}
+            </p>
+          )}
+          {vectorActive.length > 0 && (
+            <div className="chip-row">
+              {vectorActive.map((f) => (
+                <span key={f} className="chip">
+                  {f}
+                </span>
+              ))}
+            </div>
+          )}
+        </section>
+      )}
 
       <div className="route-grid">
         <label className="field">
@@ -89,12 +150,17 @@ export default function RouteCard({ route, editable = false, onChange, onSave, s
         </ul>
       </section>
 
+      <section className="docs-section">
+        <h3>Documents ({docCount})</h3>
+        <DocumentsPanel documents={value.documents || []} />
+      </section>
+
       {editable && (
         <div className="actions">
           <button type="button" className="btn primary" disabled={saving} onClick={() => onSave?.(value)}>
-            {saving ? 'Сохранение…' : 'Сохранить правки (stub)'}
+            {saving ? 'Сохранение…' : 'Сохранить в БД'}
           </button>
-          <span className="hint">Human-in-the-loop · изменения только в UI</span>
+          <span className="hint">Human-in-the-loop · PATCH /api/v1/routes</span>
         </div>
       )}
     </article>

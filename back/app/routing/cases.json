@@ -1,0 +1,2349 @@
+{
+  "meta": {
+    "count": 99,
+    "generator": "generate_cases.py"
+  },
+  "cases": [
+    {
+      "id": "case-acs-stemi-01",
+      "title": "ОКС / STEMI",
+      "active_features": [
+        "symptom_chest_pain",
+        "symptom_arm_pain",
+        "lab_troponin_high",
+        "flag_stemi_suspect",
+        "flag_st_elevation"
+      ],
+      "routing": {
+        "priority": "emergency",
+        "department": "Кардиология / ОРИТ",
+        "specialists": [
+          "Кардиолог",
+          "Реаниматолог"
+        ],
+        "required_tests": [
+          "Тропонин I",
+          "ЭКГ",
+          "Д-димер"
+        ],
+        "reasoning": [
+          "Боль за грудиной + тропонин + ST → экстренная кардиомаршрутизация"
+        ]
+      },
+      "epicrisis_snippet": "Боль за грудиной 40 мин, иррадиация, TnI↑, элевация ST."
+    },
+    {
+      "id": "case-acs-stemi-02",
+      "title": "ОКС / STEMI (усечённый)",
+      "active_features": [
+        "symptom_chest_pain",
+        "symptom_arm_pain",
+        "lab_troponin_high",
+        "flag_stemi_suspect"
+      ],
+      "routing": {
+        "priority": "emergency",
+        "department": "Кардиология / ОРИТ",
+        "specialists": [
+          "Кардиолог",
+          "Реаниматолог"
+        ],
+        "required_tests": [
+          "Тропонин I",
+          "ЭКГ",
+          "Д-димер"
+        ],
+        "reasoning": [
+          "Боль за грудиной + тропонин + ST → экстренная кардиомаршрутизация"
+        ]
+      },
+      "epicrisis_snippet": "Боль за грудиной 40 мин, иррадиация, TnI↑, элевация ST. (частичные признаки)"
+    },
+    {
+      "id": "case-acs-stemi-03",
+      "title": "ОКС / STEMI + слабость",
+      "active_features": [
+        "symptom_chest_pain",
+        "symptom_arm_pain",
+        "lab_troponin_high",
+        "flag_stemi_suspect",
+        "flag_st_elevation",
+        "symptom_weakness"
+      ],
+      "routing": {
+        "priority": "emergency",
+        "department": "Кардиология / ОРИТ",
+        "specialists": [
+          "Кардиолог",
+          "Реаниматолог"
+        ],
+        "required_tests": [
+          "Тропонин I",
+          "ЭКГ",
+          "Д-димер"
+        ],
+        "reasoning": [
+          "Боль за грудиной + тропонин + ST → экстренная кардиомаршрутизация"
+        ]
+      },
+      "epicrisis_snippet": "Боль за грудиной 40 мин, иррадиация, TnI↑, элевация ST. Слабость."
+    },
+    {
+      "id": "case-acs-unstable-01",
+      "title": "Нестабильная стенокардия",
+      "active_features": [
+        "symptom_chest_pain",
+        "symptom_dyspnea",
+        "flag_stemi_suspect"
+      ],
+      "routing": {
+        "priority": "emergency",
+        "department": "Кардиология",
+        "specialists": [
+          "Кардиолог"
+        ],
+        "required_tests": [
+          "Тропонин I",
+          "ЭКГ"
+        ],
+        "reasoning": [
+          "Клиника ОКС без подтверждённого подъёма маркеров — срочный кардиоосмотр"
+        ]
+      },
+      "epicrisis_snippet": "Давящая боль в груди при нагрузке, одышка."
+    },
+    {
+      "id": "case-acs-unstable-02",
+      "title": "Нестабильная стенокардия (усечённый)",
+      "active_features": [
+        "symptom_chest_pain",
+        "symptom_dyspnea"
+      ],
+      "routing": {
+        "priority": "emergency",
+        "department": "Кардиология",
+        "specialists": [
+          "Кардиолог"
+        ],
+        "required_tests": [
+          "Тропонин I",
+          "ЭКГ"
+        ],
+        "reasoning": [
+          "Клиника ОКС без подтверждённого подъёма маркеров — срочный кардиоосмотр"
+        ]
+      },
+      "epicrisis_snippet": "Давящая боль в груди при нагрузке, одышка. (частичные признаки)"
+    },
+    {
+      "id": "case-acs-unstable-03",
+      "title": "Нестабильная стенокардия + слабость",
+      "active_features": [
+        "symptom_chest_pain",
+        "symptom_dyspnea",
+        "flag_stemi_suspect",
+        "symptom_weakness"
+      ],
+      "routing": {
+        "priority": "emergency",
+        "department": "Кардиология",
+        "specialists": [
+          "Кардиолог"
+        ],
+        "required_tests": [
+          "Тропонин I",
+          "ЭКГ"
+        ],
+        "reasoning": [
+          "Клиника ОКС без подтверждённого подъёма маркеров — срочный кардиоосмотр"
+        ]
+      },
+      "epicrisis_snippet": "Давящая боль в груди при нагрузке, одышка. Слабость."
+    },
+    {
+      "id": "case-hf-acute-01",
+      "title": "Острая сердечная недостаточность",
+      "active_features": [
+        "symptom_dyspnea",
+        "symptom_edema",
+        "lab_bnp_high",
+        "vital_spo2_low"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Кардиология",
+        "specialists": [
+          "Кардиолог"
+        ],
+        "required_tests": [
+          "BNP",
+          "ЭхоКГ",
+          "SpO2"
+        ],
+        "reasoning": [
+          "Одышка + отёки + BNP↑"
+        ]
+      },
+      "epicrisis_snippet": "Одышка в покое, отёки голеней, NT-proBNP повышен."
+    },
+    {
+      "id": "case-hf-acute-02",
+      "title": "Острая сердечная недостаточность (усечённый)",
+      "active_features": [
+        "symptom_dyspnea",
+        "symptom_edema",
+        "lab_bnp_high"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Кардиология",
+        "specialists": [
+          "Кардиолог"
+        ],
+        "required_tests": [
+          "BNP",
+          "ЭхоКГ",
+          "SpO2"
+        ],
+        "reasoning": [
+          "Одышка + отёки + BNP↑"
+        ]
+      },
+      "epicrisis_snippet": "Одышка в покое, отёки голеней, NT-proBNP повышен. (частичные признаки)"
+    },
+    {
+      "id": "case-hf-acute-03",
+      "title": "Острая сердечная недостаточность + слабость",
+      "active_features": [
+        "symptom_dyspnea",
+        "symptom_edema",
+        "lab_bnp_high",
+        "vital_spo2_low",
+        "symptom_weakness"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Кардиология",
+        "specialists": [
+          "Кардиолог"
+        ],
+        "required_tests": [
+          "BNP",
+          "ЭхоКГ",
+          "SpO2"
+        ],
+        "reasoning": [
+          "Одышка + отёки + BNP↑"
+        ]
+      },
+      "epicrisis_snippet": "Одышка в покое, отёки голеней, NT-proBNP повышен. Слабость."
+    },
+    {
+      "id": "case-pe-suspect-01",
+      "title": "Подозрение ТЭЛА",
+      "active_features": [
+        "symptom_dyspnea",
+        "symptom_chest_pain",
+        "lab_ddimer_high",
+        "flag_pe_suspect"
+      ],
+      "routing": {
+        "priority": "emergency",
+        "department": "Пульмонология / ОРИТ",
+        "specialists": [
+          "Пульмонолог",
+          "Реаниматолог"
+        ],
+        "required_tests": [
+          "Д-димер",
+          "КТ-ангиография"
+        ],
+        "reasoning": [
+          "Одышка + Д-димер↑ → исключить ТЭЛА"
+        ]
+      },
+      "epicrisis_snippet": "Внезапная одышка, Д-димер повышен."
+    },
+    {
+      "id": "case-pe-suspect-02",
+      "title": "Подозрение ТЭЛА (усечённый)",
+      "active_features": [
+        "symptom_dyspnea",
+        "symptom_chest_pain",
+        "lab_ddimer_high"
+      ],
+      "routing": {
+        "priority": "emergency",
+        "department": "Пульмонология / ОРИТ",
+        "specialists": [
+          "Пульмонолог",
+          "Реаниматолог"
+        ],
+        "required_tests": [
+          "Д-димер",
+          "КТ-ангиография"
+        ],
+        "reasoning": [
+          "Одышка + Д-димер↑ → исключить ТЭЛА"
+        ]
+      },
+      "epicrisis_snippet": "Внезапная одышка, Д-димер повышен. (частичные признаки)"
+    },
+    {
+      "id": "case-pe-suspect-03",
+      "title": "Подозрение ТЭЛА + слабость",
+      "active_features": [
+        "symptom_dyspnea",
+        "symptom_chest_pain",
+        "lab_ddimer_high",
+        "flag_pe_suspect",
+        "symptom_weakness"
+      ],
+      "routing": {
+        "priority": "emergency",
+        "department": "Пульмонология / ОРИТ",
+        "specialists": [
+          "Пульмонолог",
+          "Реаниматолог"
+        ],
+        "required_tests": [
+          "Д-димер",
+          "КТ-ангиография"
+        ],
+        "reasoning": [
+          "Одышка + Д-димер↑ → исключить ТЭЛА"
+        ]
+      },
+      "epicrisis_snippet": "Внезапная одышка, Д-димер повышен. Слабость."
+    },
+    {
+      "id": "case-pneumonia-01",
+      "title": "Внебольничная пневмония",
+      "active_features": [
+        "symptom_fever",
+        "symptom_cough",
+        "lab_crp_high",
+        "vital_temp_high",
+        "flag_pneumonia_suspect"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Пульмонология",
+        "specialists": [
+          "Пульмонолог",
+          "Терапевт"
+        ],
+        "required_tests": [
+          "ОАК",
+          "СРБ",
+          "Рентген ОГК"
+        ],
+        "reasoning": [
+          "Лихорадка + кашель + СРБ↑"
+        ]
+      },
+      "epicrisis_snippet": "Лихорадка 38.7, кашель с мокротой, СРБ 48."
+    },
+    {
+      "id": "case-pneumonia-02",
+      "title": "Внебольничная пневмония (усечённый)",
+      "active_features": [
+        "symptom_fever",
+        "symptom_cough",
+        "lab_crp_high",
+        "vital_temp_high"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Пульмонология",
+        "specialists": [
+          "Пульмонолог",
+          "Терапевт"
+        ],
+        "required_tests": [
+          "ОАК",
+          "СРБ",
+          "Рентген ОГК"
+        ],
+        "reasoning": [
+          "Лихорадка + кашель + СРБ↑"
+        ]
+      },
+      "epicrisis_snippet": "Лихорадка 38.7, кашель с мокротой, СРБ 48. (частичные признаки)"
+    },
+    {
+      "id": "case-pneumonia-03",
+      "title": "Внебольничная пневмония + слабость",
+      "active_features": [
+        "symptom_fever",
+        "symptom_cough",
+        "lab_crp_high",
+        "vital_temp_high",
+        "flag_pneumonia_suspect",
+        "symptom_weakness"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Пульмонология",
+        "specialists": [
+          "Пульмонолог",
+          "Терапевт"
+        ],
+        "required_tests": [
+          "ОАК",
+          "СРБ",
+          "Рентген ОГК"
+        ],
+        "reasoning": [
+          "Лихорадка + кашель + СРБ↑"
+        ]
+      },
+      "epicrisis_snippet": "Лихорадка 38.7, кашель с мокротой, СРБ 48. Слабость."
+    },
+    {
+      "id": "case-bronchitis-01",
+      "title": "Острый бронхит",
+      "active_features": [
+        "symptom_cough",
+        "symptom_fever",
+        "vital_temp_high"
+      ],
+      "routing": {
+        "priority": "routine",
+        "department": "Терапия",
+        "specialists": [
+          "Терапевт"
+        ],
+        "required_tests": [
+          "ОАК"
+        ],
+        "reasoning": [
+          "Кашель/субфебрилитет без тяжёлых маркеров"
+        ]
+      },
+      "epicrisis_snippet": "Кашель 5 дней, температура 37.4."
+    },
+    {
+      "id": "case-bronchitis-02",
+      "title": "Острый бронхит (усечённый)",
+      "active_features": [
+        "symptom_cough",
+        "symptom_fever"
+      ],
+      "routing": {
+        "priority": "routine",
+        "department": "Терапия",
+        "specialists": [
+          "Терапевт"
+        ],
+        "required_tests": [
+          "ОАК"
+        ],
+        "reasoning": [
+          "Кашель/субфебрилитет без тяжёлых маркеров"
+        ]
+      },
+      "epicrisis_snippet": "Кашель 5 дней, температура 37.4. (частичные признаки)"
+    },
+    {
+      "id": "case-bronchitis-03",
+      "title": "Острый бронхит + слабость",
+      "active_features": [
+        "symptom_cough",
+        "symptom_fever",
+        "vital_temp_high",
+        "symptom_weakness"
+      ],
+      "routing": {
+        "priority": "routine",
+        "department": "Терапия",
+        "specialists": [
+          "Терапевт"
+        ],
+        "required_tests": [
+          "ОАК"
+        ],
+        "reasoning": [
+          "Кашель/субфебрилитет без тяжёлых маркеров"
+        ]
+      },
+      "epicrisis_snippet": "Кашель 5 дней, температура 37.4. Слабость."
+    },
+    {
+      "id": "case-asthma-exacerbation-01",
+      "title": "Обострение астмы",
+      "active_features": [
+        "symptom_dyspnea",
+        "symptom_wheeze",
+        "vital_spo2_low",
+        "vital_rr_high"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Пульмонология",
+        "specialists": [
+          "Пульмонолог"
+        ],
+        "required_tests": [
+          "SpO2",
+          "Пикфлоуметрия"
+        ],
+        "reasoning": [
+          "Свисты + одышка + SpO2↓"
+        ]
+      },
+      "epicrisis_snippet": "Приступ удушья, свистящее дыхание."
+    },
+    {
+      "id": "case-asthma-exacerbation-02",
+      "title": "Обострение астмы (усечённый)",
+      "active_features": [
+        "symptom_dyspnea",
+        "symptom_wheeze",
+        "vital_spo2_low"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Пульмонология",
+        "specialists": [
+          "Пульмонолог"
+        ],
+        "required_tests": [
+          "SpO2",
+          "Пикфлоуметрия"
+        ],
+        "reasoning": [
+          "Свисты + одышка + SpO2↓"
+        ]
+      },
+      "epicrisis_snippet": "Приступ удушья, свистящее дыхание. (частичные признаки)"
+    },
+    {
+      "id": "case-asthma-exacerbation-03",
+      "title": "Обострение астмы + слабость",
+      "active_features": [
+        "symptom_dyspnea",
+        "symptom_wheeze",
+        "vital_spo2_low",
+        "vital_rr_high",
+        "symptom_weakness"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Пульмонология",
+        "specialists": [
+          "Пульмонолог"
+        ],
+        "required_tests": [
+          "SpO2",
+          "Пикфлоуметрия"
+        ],
+        "reasoning": [
+          "Свисты + одышка + SpO2↓"
+        ]
+      },
+      "epicrisis_snippet": "Приступ удушья, свистящее дыхание. Слабость."
+    },
+    {
+      "id": "case-uti-01",
+      "title": "Инфекция МВП",
+      "active_features": [
+        "symptom_urine_pain",
+        "symptom_fever",
+        "lab_urine_leukocytes"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Урология",
+        "specialists": [
+          "Уролог",
+          "Терапевт"
+        ],
+        "required_tests": [
+          "ОАМ",
+          "Посев мочи"
+        ],
+        "reasoning": [
+          "Дизурия + лейкоцитурия"
+        ]
+      },
+      "epicrisis_snippet": "Рези при мочеиспускании, лейкоциты в моче."
+    },
+    {
+      "id": "case-uti-02",
+      "title": "Инфекция МВП (усечённый)",
+      "active_features": [
+        "symptom_urine_pain",
+        "symptom_fever"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Урология",
+        "specialists": [
+          "Уролог",
+          "Терапевт"
+        ],
+        "required_tests": [
+          "ОАМ",
+          "Посев мочи"
+        ],
+        "reasoning": [
+          "Дизурия + лейкоцитурия"
+        ]
+      },
+      "epicrisis_snippet": "Рези при мочеиспускании, лейкоциты в моче. (частичные признаки)"
+    },
+    {
+      "id": "case-uti-03",
+      "title": "Инфекция МВП + слабость",
+      "active_features": [
+        "symptom_urine_pain",
+        "symptom_fever",
+        "lab_urine_leukocytes",
+        "symptom_weakness"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Урология",
+        "specialists": [
+          "Уролог",
+          "Терапевт"
+        ],
+        "required_tests": [
+          "ОАМ",
+          "Посев мочи"
+        ],
+        "reasoning": [
+          "Дизурия + лейкоцитурия"
+        ]
+      },
+      "epicrisis_snippet": "Рези при мочеиспускании, лейкоциты в моче. Слабость."
+    },
+    {
+      "id": "case-renal-colic-01",
+      "title": "Почечная колика",
+      "active_features": [
+        "symptom_abdominal_pain",
+        "symptom_back_pain",
+        "lab_urine_blood",
+        "flag_renal_colic"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Урология",
+        "specialists": [
+          "Уролог"
+        ],
+        "required_tests": [
+          "ОАМ",
+          "УЗИ почек"
+        ],
+        "reasoning": [
+          "Боль в боку + гематурия"
+        ]
+      },
+      "epicrisis_snippet": "Острая боль в пояснице, эритроциты в моче."
+    },
+    {
+      "id": "case-renal-colic-02",
+      "title": "Почечная колика (усечённый)",
+      "active_features": [
+        "symptom_abdominal_pain",
+        "symptom_back_pain",
+        "lab_urine_blood"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Урология",
+        "specialists": [
+          "Уролог"
+        ],
+        "required_tests": [
+          "ОАМ",
+          "УЗИ почек"
+        ],
+        "reasoning": [
+          "Боль в боку + гематурия"
+        ]
+      },
+      "epicrisis_snippet": "Острая боль в пояснице, эритроциты в моче. (частичные признаки)"
+    },
+    {
+      "id": "case-renal-colic-03",
+      "title": "Почечная колика + слабость",
+      "active_features": [
+        "symptom_abdominal_pain",
+        "symptom_back_pain",
+        "lab_urine_blood",
+        "flag_renal_colic",
+        "symptom_weakness"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Урология",
+        "specialists": [
+          "Уролог"
+        ],
+        "required_tests": [
+          "ОАМ",
+          "УЗИ почек"
+        ],
+        "reasoning": [
+          "Боль в боку + гематурия"
+        ]
+      },
+      "epicrisis_snippet": "Острая боль в пояснице, эритроциты в моче. Слабость."
+    },
+    {
+      "id": "case-appendicitis-01",
+      "title": "Подозрение аппендицит",
+      "active_features": [
+        "symptom_abdominal_pain",
+        "symptom_nausea",
+        "symptom_fever",
+        "lab_wbc_high",
+        "flag_appendicitis"
+      ],
+      "routing": {
+        "priority": "emergency",
+        "department": "Хирургия",
+        "specialists": [
+          "Хирург"
+        ],
+        "required_tests": [
+          "ОАК",
+          "УЗИ ОБП"
+        ],
+        "reasoning": [
+          "Боль в правой подвздошной + лейкоцитоз"
+        ]
+      },
+      "epicrisis_snippet": "Боль в правой нижней части живота, тошнота, лейкоцитоз."
+    },
+    {
+      "id": "case-appendicitis-02",
+      "title": "Подозрение аппендицит (усечённый)",
+      "active_features": [
+        "symptom_abdominal_pain",
+        "symptom_nausea",
+        "symptom_fever",
+        "lab_wbc_high"
+      ],
+      "routing": {
+        "priority": "emergency",
+        "department": "Хирургия",
+        "specialists": [
+          "Хирург"
+        ],
+        "required_tests": [
+          "ОАК",
+          "УЗИ ОБП"
+        ],
+        "reasoning": [
+          "Боль в правой подвздошной + лейкоцитоз"
+        ]
+      },
+      "epicrisis_snippet": "Боль в правой нижней части живота, тошнота, лейкоцитоз. (частичные признаки)"
+    },
+    {
+      "id": "case-appendicitis-03",
+      "title": "Подозрение аппендицит + слабость",
+      "active_features": [
+        "symptom_abdominal_pain",
+        "symptom_nausea",
+        "symptom_fever",
+        "lab_wbc_high",
+        "flag_appendicitis",
+        "symptom_weakness"
+      ],
+      "routing": {
+        "priority": "emergency",
+        "department": "Хирургия",
+        "specialists": [
+          "Хирург"
+        ],
+        "required_tests": [
+          "ОАК",
+          "УЗИ ОБП"
+        ],
+        "reasoning": [
+          "Боль в правой подвздошной + лейкоцитоз"
+        ]
+      },
+      "epicrisis_snippet": "Боль в правой нижней части живота, тошнота, лейкоцитоз. Слабость."
+    },
+    {
+      "id": "case-gastritis-01",
+      "title": "Острый гастрит / диспепсия",
+      "active_features": [
+        "symptom_abdominal_pain",
+        "symptom_nausea"
+      ],
+      "routing": {
+        "priority": "routine",
+        "department": "Гастроэнтерология",
+        "specialists": [
+          "Гастроэнтеролог",
+          "Терапевт"
+        ],
+        "required_tests": [
+          "ОАК",
+          "УЗИ ОБП"
+        ],
+        "reasoning": [
+          "Эпигастралгия без red flags"
+        ]
+      },
+      "epicrisis_snippet": "Боль в эпигастрии после еды, тошнота."
+    },
+    {
+      "id": "case-gastritis-03",
+      "title": "Острый гастрит / диспепсия + слабость",
+      "active_features": [
+        "symptom_abdominal_pain",
+        "symptom_nausea",
+        "symptom_weakness"
+      ],
+      "routing": {
+        "priority": "routine",
+        "department": "Гастроэнтерология",
+        "specialists": [
+          "Гастроэнтеролог",
+          "Терапевт"
+        ],
+        "required_tests": [
+          "ОАК",
+          "УЗИ ОБП"
+        ],
+        "reasoning": [
+          "Эпигастралгия без red flags"
+        ]
+      },
+      "epicrisis_snippet": "Боль в эпигастрии после еды, тошнота. Слабость."
+    },
+    {
+      "id": "case-pancreatitis-01",
+      "title": "Панкреатит",
+      "active_features": [
+        "symptom_abdominal_pain",
+        "symptom_nausea",
+        "lab_amylase_high",
+        "lab_lipase_high"
+      ],
+      "routing": {
+        "priority": "emergency",
+        "department": "Хирургия",
+        "specialists": [
+          "Хирург",
+          "Гастроэнтеролог"
+        ],
+        "required_tests": [
+          "Амилаза",
+          "Липаза",
+          "УЗИ"
+        ],
+        "reasoning": [
+          "Опоясывающая боль + амилаза/липаза↑"
+        ]
+      },
+      "epicrisis_snippet": "Опоясывающая боль, амилаза повышена."
+    },
+    {
+      "id": "case-pancreatitis-02",
+      "title": "Панкреатит (усечённый)",
+      "active_features": [
+        "symptom_abdominal_pain",
+        "symptom_nausea",
+        "lab_amylase_high"
+      ],
+      "routing": {
+        "priority": "emergency",
+        "department": "Хирургия",
+        "specialists": [
+          "Хирург",
+          "Гастроэнтеролог"
+        ],
+        "required_tests": [
+          "Амилаза",
+          "Липаза",
+          "УЗИ"
+        ],
+        "reasoning": [
+          "Опоясывающая боль + амилаза/липаза↑"
+        ]
+      },
+      "epicrisis_snippet": "Опоясывающая боль, амилаза повышена. (частичные признаки)"
+    },
+    {
+      "id": "case-pancreatitis-03",
+      "title": "Панкреатит + слабость",
+      "active_features": [
+        "symptom_abdominal_pain",
+        "symptom_nausea",
+        "lab_amylase_high",
+        "lab_lipase_high",
+        "symptom_weakness"
+      ],
+      "routing": {
+        "priority": "emergency",
+        "department": "Хирургия",
+        "specialists": [
+          "Хирург",
+          "Гастроэнтеролог"
+        ],
+        "required_tests": [
+          "Амилаза",
+          "Липаза",
+          "УЗИ"
+        ],
+        "reasoning": [
+          "Опоясывающая боль + амилаза/липаза↑"
+        ]
+      },
+      "epicrisis_snippet": "Опоясывающая боль, амилаза повышена. Слабость."
+    },
+    {
+      "id": "case-hepatitis-01",
+      "title": "Гепатит / холестаз",
+      "active_features": [
+        "symptom_jaundice",
+        "symptom_weakness",
+        "lab_alt_high",
+        "lab_ast_high",
+        "lab_bilirubin_high"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Гастроэнтерология",
+        "specialists": [
+          "Гастроэнтеролог",
+          "Инфекционист"
+        ],
+        "required_tests": [
+          "АЛТ",
+          "АСТ",
+          "Билирубин",
+          "Гепатиты"
+        ],
+        "reasoning": [
+          "Желтуха + цитолиз"
+        ]
+      },
+      "epicrisis_snippet": "Желтушность склер, АЛТ/АСТ↑."
+    },
+    {
+      "id": "case-hepatitis-02",
+      "title": "Гепатит / холестаз (усечённый)",
+      "active_features": [
+        "symptom_jaundice",
+        "symptom_weakness",
+        "lab_alt_high",
+        "lab_ast_high"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Гастроэнтерология",
+        "specialists": [
+          "Гастроэнтеролог",
+          "Инфекционист"
+        ],
+        "required_tests": [
+          "АЛТ",
+          "АСТ",
+          "Билирубин",
+          "Гепатиты"
+        ],
+        "reasoning": [
+          "Желтуха + цитолиз"
+        ]
+      },
+      "epicrisis_snippet": "Желтушность склер, АЛТ/АСТ↑. (частичные признаки)"
+    },
+    {
+      "id": "case-dm2-followup-01",
+      "title": "СД 2 типа — плановый контроль",
+      "active_features": [
+        "flag_diabetes",
+        "lab_hba1c_high",
+        "lab_glucose_high"
+      ],
+      "routing": {
+        "priority": "routine",
+        "department": "Эндокринология",
+        "specialists": [
+          "Эндокринолог"
+        ],
+        "required_tests": [
+          "HbA1c",
+          "Глюкоза натощак"
+        ],
+        "reasoning": [
+          "Стабильный СД без острых осложнений"
+        ]
+      },
+      "epicrisis_snippet": "HbA1c 7.2%, жалоб на острые состояния нет."
+    },
+    {
+      "id": "case-dm2-followup-02",
+      "title": "СД 2 типа — плановый контроль (усечённый)",
+      "active_features": [
+        "flag_diabetes",
+        "lab_hba1c_high"
+      ],
+      "routing": {
+        "priority": "routine",
+        "department": "Эндокринология",
+        "specialists": [
+          "Эндокринолог"
+        ],
+        "required_tests": [
+          "HbA1c",
+          "Глюкоза натощак"
+        ],
+        "reasoning": [
+          "Стабильный СД без острых осложнений"
+        ]
+      },
+      "epicrisis_snippet": "HbA1c 7.2%, жалоб на острые состояния нет. (частичные признаки)"
+    },
+    {
+      "id": "case-dm2-followup-03",
+      "title": "СД 2 типа — плановый контроль + слабость",
+      "active_features": [
+        "flag_diabetes",
+        "lab_hba1c_high",
+        "lab_glucose_high",
+        "symptom_weakness"
+      ],
+      "routing": {
+        "priority": "routine",
+        "department": "Эндокринология",
+        "specialists": [
+          "Эндокринолог"
+        ],
+        "required_tests": [
+          "HbA1c",
+          "Глюкоза натощак"
+        ],
+        "reasoning": [
+          "Стабильный СД без острых осложнений"
+        ]
+      },
+      "epicrisis_snippet": "HbA1c 7.2%, жалоб на острые состояния нет. Слабость."
+    },
+    {
+      "id": "case-hypoglycemia-01",
+      "title": "Гипогликемия",
+      "active_features": [
+        "symptom_weakness",
+        "symptom_dizziness",
+        "lab_glucose_low",
+        "flag_diabetes"
+      ],
+      "routing": {
+        "priority": "emergency",
+        "department": "Эндокринология / ОРИТ",
+        "specialists": [
+          "Эндокринолог",
+          "Реаниматолог"
+        ],
+        "required_tests": [
+          "Глюкоза"
+        ],
+        "reasoning": [
+          "Симптомы + глюкоза↓"
+        ]
+      },
+      "epicrisis_snippet": "Слабость, потливость, глюкоза 2.8."
+    },
+    {
+      "id": "case-hypoglycemia-02",
+      "title": "Гипогликемия (усечённый)",
+      "active_features": [
+        "symptom_weakness",
+        "symptom_dizziness",
+        "lab_glucose_low"
+      ],
+      "routing": {
+        "priority": "emergency",
+        "department": "Эндокринология / ОРИТ",
+        "specialists": [
+          "Эндокринолог",
+          "Реаниматолог"
+        ],
+        "required_tests": [
+          "Глюкоза"
+        ],
+        "reasoning": [
+          "Симптомы + глюкоза↓"
+        ]
+      },
+      "epicrisis_snippet": "Слабость, потливость, глюкоза 2.8. (частичные признаки)"
+    },
+    {
+      "id": "case-thyroid-hyper-01",
+      "title": "Тиреотоксикоз",
+      "active_features": [
+        "symptom_palpitations",
+        "symptom_weight_loss",
+        "lab_tsh_low",
+        "vital_hr_high"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Эндокринология",
+        "specialists": [
+          "Эндокринолог"
+        ],
+        "required_tests": [
+          "ТТГ",
+          "св.Т4"
+        ],
+        "reasoning": [
+          "Тахикардия + ТТГ↓"
+        ]
+      },
+      "epicrisis_snippet": "Сердцебиение, похудение, ТТГ снижен."
+    },
+    {
+      "id": "case-thyroid-hyper-02",
+      "title": "Тиреотоксикоз (усечённый)",
+      "active_features": [
+        "symptom_palpitations",
+        "symptom_weight_loss",
+        "lab_tsh_low"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Эндокринология",
+        "specialists": [
+          "Эндокринолог"
+        ],
+        "required_tests": [
+          "ТТГ",
+          "св.Т4"
+        ],
+        "reasoning": [
+          "Тахикардия + ТТГ↓"
+        ]
+      },
+      "epicrisis_snippet": "Сердцебиение, похудение, ТТГ снижен. (частичные признаки)"
+    },
+    {
+      "id": "case-thyroid-hyper-03",
+      "title": "Тиреотоксикоз + слабость",
+      "active_features": [
+        "symptom_palpitations",
+        "symptom_weight_loss",
+        "lab_tsh_low",
+        "vital_hr_high",
+        "symptom_weakness"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Эндокринология",
+        "specialists": [
+          "Эндокринолог"
+        ],
+        "required_tests": [
+          "ТТГ",
+          "св.Т4"
+        ],
+        "reasoning": [
+          "Тахикардия + ТТГ↓"
+        ]
+      },
+      "epicrisis_snippet": "Сердцебиение, похудение, ТТГ снижен. Слабость."
+    },
+    {
+      "id": "case-anemia-01",
+      "title": "Анемия",
+      "active_features": [
+        "symptom_weakness",
+        "symptom_dizziness",
+        "lab_hemoglobin_low"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Терапия / Гематология",
+        "specialists": [
+          "Терапевт",
+          "Гематолог"
+        ],
+        "required_tests": [
+          "ОАК",
+          "Ферритин"
+        ],
+        "reasoning": [
+          "Слабость + Hb↓"
+        ]
+      },
+      "epicrisis_snippet": "Слабость, гемоглобин 95."
+    },
+    {
+      "id": "case-anemia-02",
+      "title": "Анемия (усечённый)",
+      "active_features": [
+        "symptom_weakness",
+        "symptom_dizziness"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Терапия / Гематология",
+        "specialists": [
+          "Терапевт",
+          "Гематолог"
+        ],
+        "required_tests": [
+          "ОАК",
+          "Ферритин"
+        ],
+        "reasoning": [
+          "Слабость + Hb↓"
+        ]
+      },
+      "epicrisis_snippet": "Слабость, гемоглобин 95. (частичные признаки)"
+    },
+    {
+      "id": "case-sepsis-01",
+      "title": "Подозрение сепсис",
+      "active_features": [
+        "symptom_fever",
+        "vital_temp_high",
+        "vital_hr_high",
+        "lab_wbc_high",
+        "lab_procalcitonin_high",
+        "flag_sepsis_suspect"
+      ],
+      "routing": {
+        "priority": "emergency",
+        "department": "ОРИТ / Инфекционное",
+        "specialists": [
+          "Реаниматолог",
+          "Инфекционист"
+        ],
+        "required_tests": [
+          "ОАК",
+          "Прокальцитонин",
+          "Посевы"
+        ],
+        "reasoning": [
+          "Лихорадка + тахикардия + PCT↑"
+        ]
+      },
+      "epicrisis_snippet": "Лихорадка 39.2, ЧСС 120, прокальцитонин повышен."
+    },
+    {
+      "id": "case-sepsis-02",
+      "title": "Подозрение сепсис (усечённый)",
+      "active_features": [
+        "symptom_fever",
+        "vital_temp_high",
+        "vital_hr_high",
+        "lab_wbc_high",
+        "lab_procalcitonin_high"
+      ],
+      "routing": {
+        "priority": "emergency",
+        "department": "ОРИТ / Инфекционное",
+        "specialists": [
+          "Реаниматолог",
+          "Инфекционист"
+        ],
+        "required_tests": [
+          "ОАК",
+          "Прокальцитонин",
+          "Посевы"
+        ],
+        "reasoning": [
+          "Лихорадка + тахикардия + PCT↑"
+        ]
+      },
+      "epicrisis_snippet": "Лихорадка 39.2, ЧСС 120, прокальцитонин повышен. (частичные признаки)"
+    },
+    {
+      "id": "case-sepsis-03",
+      "title": "Подозрение сепсис + слабость",
+      "active_features": [
+        "symptom_fever",
+        "vital_temp_high",
+        "vital_hr_high",
+        "lab_wbc_high",
+        "lab_procalcitonin_high",
+        "flag_sepsis_suspect",
+        "symptom_weakness"
+      ],
+      "routing": {
+        "priority": "emergency",
+        "department": "ОРИТ / Инфекционное",
+        "specialists": [
+          "Реаниматолог",
+          "Инфекционист"
+        ],
+        "required_tests": [
+          "ОАК",
+          "Прокальцитонин",
+          "Посевы"
+        ],
+        "reasoning": [
+          "Лихорадка + тахикардия + PCT↑"
+        ]
+      },
+      "epicrisis_snippet": "Лихорадка 39.2, ЧСС 120, прокальцитонин повышен. Слабость."
+    },
+    {
+      "id": "case-stroke-01",
+      "title": "Острое нарушение мозгового кровообращения",
+      "active_features": [
+        "symptom_speech",
+        "symptom_numbness",
+        "symptom_weakness",
+        "flag_stroke_suspect"
+      ],
+      "routing": {
+        "priority": "emergency",
+        "department": "Неврология / Инсультный центр",
+        "specialists": [
+          "Невролог"
+        ],
+        "required_tests": [
+          "КТ головного мозга",
+          "Глюкоза"
+        ],
+        "reasoning": [
+          "Очаговая неврология → инсультный протокол"
+        ]
+      },
+      "epicrisis_snippet": "Внезапная слабость руки, нарушена речь."
+    },
+    {
+      "id": "case-stroke-02",
+      "title": "Острое нарушение мозгового кровообращения (усечённый)",
+      "active_features": [
+        "symptom_speech",
+        "symptom_numbness",
+        "symptom_weakness"
+      ],
+      "routing": {
+        "priority": "emergency",
+        "department": "Неврология / Инсультный центр",
+        "specialists": [
+          "Невролог"
+        ],
+        "required_tests": [
+          "КТ головного мозга",
+          "Глюкоза"
+        ],
+        "reasoning": [
+          "Очаговая неврология → инсультный протокол"
+        ]
+      },
+      "epicrisis_snippet": "Внезапная слабость руки, нарушена речь. (частичные признаки)"
+    },
+    {
+      "id": "case-migraine-01",
+      "title": "Мигрень / цефалгия",
+      "active_features": [
+        "symptom_headache",
+        "symptom_nausea"
+      ],
+      "routing": {
+        "priority": "routine",
+        "department": "Неврология",
+        "specialists": [
+          "Невролог"
+        ],
+        "required_tests": [],
+        "reasoning": [
+          "Головная боль без очаговых знаков"
+        ]
+      },
+      "epicrisis_snippet": "Пульсирующая головная боль, тошнота, без очага."
+    },
+    {
+      "id": "case-migraine-03",
+      "title": "Мигрень / цефалгия + слабость",
+      "active_features": [
+        "symptom_headache",
+        "symptom_nausea",
+        "symptom_weakness"
+      ],
+      "routing": {
+        "priority": "routine",
+        "department": "Неврология",
+        "specialists": [
+          "Невролог"
+        ],
+        "required_tests": [],
+        "reasoning": [
+          "Головная боль без очаговых знаков"
+        ]
+      },
+      "epicrisis_snippet": "Пульсирующая головная боль, тошнота, без очага. Слабость."
+    },
+    {
+      "id": "case-trauma-leg-01",
+      "title": "Травма ноги / подозрение перелом",
+      "active_features": [
+        "symptom_leg_pain",
+        "symptom_trauma",
+        "flag_fracture"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Травматология",
+        "specialists": [
+          "Травматолог"
+        ],
+        "required_tests": [
+          "Рентген"
+        ],
+        "reasoning": [
+          "Травма + боль в ноге"
+        ]
+      },
+      "epicrisis_snippet": "Упал, болит нога, отёк."
+    },
+    {
+      "id": "case-trauma-leg-02",
+      "title": "Травма ноги / подозрение перелом (усечённый)",
+      "active_features": [
+        "symptom_leg_pain",
+        "symptom_trauma"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Травматология",
+        "specialists": [
+          "Травматолог"
+        ],
+        "required_tests": [
+          "Рентген"
+        ],
+        "reasoning": [
+          "Травма + боль в ноге"
+        ]
+      },
+      "epicrisis_snippet": "Упал, болит нога, отёк. (частичные признаки)"
+    },
+    {
+      "id": "case-trauma-leg-03",
+      "title": "Травма ноги / подозрение перелом + слабость",
+      "active_features": [
+        "symptom_leg_pain",
+        "symptom_trauma",
+        "flag_fracture",
+        "symptom_weakness"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Травматология",
+        "specialists": [
+          "Травматолог"
+        ],
+        "required_tests": [
+          "Рентген"
+        ],
+        "reasoning": [
+          "Травма + боль в ноге"
+        ]
+      },
+      "epicrisis_snippet": "Упал, болит нога, отёк. Слабость."
+    },
+    {
+      "id": "case-allergy-01",
+      "title": "Аллергическая реакция",
+      "active_features": [
+        "symptom_rash",
+        "symptom_itch",
+        "symptom_allergy"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Аллергология / Терапия",
+        "specialists": [
+          "Аллерголог",
+          "Терапевт"
+        ],
+        "required_tests": [],
+        "reasoning": [
+          "Сыпь/зуд без анафилаксии"
+        ]
+      },
+      "epicrisis_snippet": "Сыпь и зуд после препарата."
+    },
+    {
+      "id": "case-allergy-02",
+      "title": "Аллергическая реакция (усечённый)",
+      "active_features": [
+        "symptom_rash",
+        "symptom_itch"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Аллергология / Терапия",
+        "specialists": [
+          "Аллерголог",
+          "Терапевт"
+        ],
+        "required_tests": [],
+        "reasoning": [
+          "Сыпь/зуд без анафилаксии"
+        ]
+      },
+      "epicrisis_snippet": "Сыпь и зуд после препарата. (частичные признаки)"
+    },
+    {
+      "id": "case-allergy-03",
+      "title": "Аллергическая реакция + слабость",
+      "active_features": [
+        "symptom_rash",
+        "symptom_itch",
+        "symptom_allergy",
+        "symptom_weakness"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Аллергология / Терапия",
+        "specialists": [
+          "Аллерголог",
+          "Терапевт"
+        ],
+        "required_tests": [],
+        "reasoning": [
+          "Сыпь/зуд без анафилаксии"
+        ]
+      },
+      "epicrisis_snippet": "Сыпь и зуд после препарата. Слабость."
+    },
+    {
+      "id": "case-anaphylaxis-01",
+      "title": "Анафилаксия",
+      "active_features": [
+        "symptom_allergy",
+        "symptom_dyspnea",
+        "vital_bp_low",
+        "flag_anaphylaxis"
+      ],
+      "routing": {
+        "priority": "emergency",
+        "department": "ОРИТ",
+        "specialists": [
+          "Реаниматолог"
+        ],
+        "required_tests": [],
+        "reasoning": [
+          "Аллергия + гипотония/одышка"
+        ]
+      },
+      "epicrisis_snippet": "Отёк, одышка, АД 80/50 после укуса."
+    },
+    {
+      "id": "case-anaphylaxis-02",
+      "title": "Анафилаксия (усечённый)",
+      "active_features": [
+        "symptom_allergy",
+        "symptom_dyspnea",
+        "vital_bp_low"
+      ],
+      "routing": {
+        "priority": "emergency",
+        "department": "ОРИТ",
+        "specialists": [
+          "Реаниматолог"
+        ],
+        "required_tests": [],
+        "reasoning": [
+          "Аллергия + гипотония/одышка"
+        ]
+      },
+      "epicrisis_snippet": "Отёк, одышка, АД 80/50 после укуса. (частичные признаки)"
+    },
+    {
+      "id": "case-anaphylaxis-03",
+      "title": "Анафилаксия + слабость",
+      "active_features": [
+        "symptom_allergy",
+        "symptom_dyspnea",
+        "vital_bp_low",
+        "flag_anaphylaxis",
+        "symptom_weakness"
+      ],
+      "routing": {
+        "priority": "emergency",
+        "department": "ОРИТ",
+        "specialists": [
+          "Реаниматолог"
+        ],
+        "required_tests": [],
+        "reasoning": [
+          "Аллергия + гипотония/одышка"
+        ]
+      },
+      "epicrisis_snippet": "Отёк, одышка, АД 80/50 после укуса. Слабость."
+    },
+    {
+      "id": "case-hypertension-01",
+      "title": "Артериальная гипертензия",
+      "active_features": [
+        "vital_bp_high",
+        "symptom_headache"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Терапия / Кардиология",
+        "specialists": [
+          "Терапевт",
+          "Кардиолог"
+        ],
+        "required_tests": [
+          "АД-мониторинг",
+          "ОАК"
+        ],
+        "reasoning": [
+          "АД↑ + головная боль"
+        ]
+      },
+      "epicrisis_snippet": "АД 170/100, головная боль."
+    },
+    {
+      "id": "case-hypertension-03",
+      "title": "Артериальная гипертензия + слабость",
+      "active_features": [
+        "vital_bp_high",
+        "symptom_headache",
+        "symptom_weakness"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Терапия / Кардиология",
+        "specialists": [
+          "Терапевт",
+          "Кардиолог"
+        ],
+        "required_tests": [
+          "АД-мониторинг",
+          "ОАК"
+        ],
+        "reasoning": [
+          "АД↑ + головная боль"
+        ]
+      },
+      "epicrisis_snippet": "АД 170/100, головная боль. Слабость."
+    },
+    {
+      "id": "case-hyperlipidemia-01",
+      "title": "Дислипидемия — плановый",
+      "active_features": [
+        "lab_cholesterol_high",
+        "lab_ldl_high"
+      ],
+      "routing": {
+        "priority": "routine",
+        "department": "Кардиология / Терапия",
+        "specialists": [
+          "Кардиолог",
+          "Терапевт"
+        ],
+        "required_tests": [
+          "Липидограмма"
+        ],
+        "reasoning": [
+          "Изолированная дислипидемия без клиники ОКС"
+        ]
+      },
+      "epicrisis_snippet": "Холестерин 6.8, жалоб нет."
+    },
+    {
+      "id": "case-hyperlipidemia-03",
+      "title": "Дислипидемия — плановый + слабость",
+      "active_features": [
+        "lab_cholesterol_high",
+        "lab_ldl_high",
+        "symptom_weakness"
+      ],
+      "routing": {
+        "priority": "routine",
+        "department": "Кардиология / Терапия",
+        "specialists": [
+          "Кардиолог",
+          "Терапевт"
+        ],
+        "required_tests": [
+          "Липидограмма"
+        ],
+        "reasoning": [
+          "Изолированная дислипидемия без клиники ОКС"
+        ]
+      },
+      "epicrisis_snippet": "Холестерин 6.8, жалоб нет. Слабость."
+    },
+    {
+      "id": "case-ckd-01",
+      "title": "ХБП / азотемия",
+      "active_features": [
+        "lab_creatinine_high",
+        "lab_urea_high",
+        "lab_urine_protein"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Нефрология",
+        "specialists": [
+          "Нефролог"
+        ],
+        "required_tests": [
+          "Креатинин",
+          "ОАМ",
+          "УЗИ почек"
+        ],
+        "reasoning": [
+          "Креатинин/мочевина↑"
+        ]
+      },
+      "epicrisis_snippet": "Креатинин 180, протеинурия."
+    },
+    {
+      "id": "case-ckd-02",
+      "title": "ХБП / азотемия (усечённый)",
+      "active_features": [
+        "lab_creatinine_high",
+        "lab_urea_high"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Нефрология",
+        "specialists": [
+          "Нефролог"
+        ],
+        "required_tests": [
+          "Креатинин",
+          "ОАМ",
+          "УЗИ почек"
+        ],
+        "reasoning": [
+          "Креатинин/мочевина↑"
+        ]
+      },
+      "epicrisis_snippet": "Креатинин 180, протеинурия. (частичные признаки)"
+    },
+    {
+      "id": "case-ckd-03",
+      "title": "ХБП / азотемия + слабость",
+      "active_features": [
+        "lab_creatinine_high",
+        "lab_urea_high",
+        "lab_urine_protein",
+        "symptom_weakness"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Нефрология",
+        "specialists": [
+          "Нефролог"
+        ],
+        "required_tests": [
+          "Креатинин",
+          "ОАМ",
+          "УЗИ почек"
+        ],
+        "reasoning": [
+          "Креатинин/мочевина↑"
+        ]
+      },
+      "epicrisis_snippet": "Креатинин 180, протеинурия. Слабость."
+    },
+    {
+      "id": "case-ent-otitis-01",
+      "title": "Отит",
+      "active_features": [
+        "symptom_ear_pain",
+        "symptom_fever"
+      ],
+      "routing": {
+        "priority": "routine",
+        "department": "ЛОР",
+        "specialists": [
+          "ЛОР"
+        ],
+        "required_tests": [],
+        "reasoning": [
+          "Боль в ухе ± лихорадка"
+        ]
+      },
+      "epicrisis_snippet": "Боль в ухе, температура 37.8."
+    },
+    {
+      "id": "case-ent-otitis-03",
+      "title": "Отит + слабость",
+      "active_features": [
+        "symptom_ear_pain",
+        "symptom_fever",
+        "symptom_weakness"
+      ],
+      "routing": {
+        "priority": "routine",
+        "department": "ЛОР",
+        "specialists": [
+          "ЛОР"
+        ],
+        "required_tests": [],
+        "reasoning": [
+          "Боль в ухе ± лихорадка"
+        ]
+      },
+      "epicrisis_snippet": "Боль в ухе, температура 37.8. Слабость."
+    },
+    {
+      "id": "case-dental-01",
+      "title": "Одонтогенная боль",
+      "active_features": [
+        "symptom_tooth_pain"
+      ],
+      "routing": {
+        "priority": "routine",
+        "department": "Стоматология",
+        "specialists": [
+          "Стоматолог"
+        ],
+        "required_tests": [],
+        "reasoning": [
+          "Зубная боль без системных red flags"
+        ]
+      },
+      "epicrisis_snippet": "Острая зубная боль."
+    },
+    {
+      "id": "case-dental-03",
+      "title": "Одонтогенная боль + слабость",
+      "active_features": [
+        "symptom_tooth_pain",
+        "symptom_weakness"
+      ],
+      "routing": {
+        "priority": "routine",
+        "department": "Стоматология",
+        "specialists": [
+          "Стоматолог"
+        ],
+        "required_tests": [],
+        "reasoning": [
+          "Зубная боль без системных red flags"
+        ]
+      },
+      "epicrisis_snippet": "Острая зубная боль. Слабость."
+    },
+    {
+      "id": "case-oncology-suspect-01",
+      "title": "Онконастороженность",
+      "active_features": [
+        "symptom_weight_loss",
+        "symptom_night_sweats",
+        "symptom_weakness",
+        "flag_oncology"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Терапия / Онкология",
+        "specialists": [
+          "Терапевт",
+          "Онколог"
+        ],
+        "required_tests": [
+          "ОАК",
+          "Биохимия",
+          "КТ"
+        ],
+        "reasoning": [
+          "B-симптомы / необъяснимая потеря веса"
+        ]
+      },
+      "epicrisis_snippet": "Потеря веса 8 кг, ночная потливость."
+    },
+    {
+      "id": "case-oncology-suspect-02",
+      "title": "Онконастороженность (усечённый)",
+      "active_features": [
+        "symptom_weight_loss",
+        "symptom_night_sweats",
+        "symptom_weakness"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Терапия / Онкология",
+        "specialists": [
+          "Терапевт",
+          "Онколог"
+        ],
+        "required_tests": [
+          "ОАК",
+          "Биохимия",
+          "КТ"
+        ],
+        "reasoning": [
+          "B-симптомы / необъяснимая потеря веса"
+        ]
+      },
+      "epicrisis_snippet": "Потеря веса 8 кг, ночная потливость. (частичные признаки)"
+    },
+    {
+      "id": "case-anxiety-01",
+      "title": "Тревожное расстройство / паника",
+      "active_features": [
+        "symptom_anxiety",
+        "symptom_palpitations",
+        "symptom_insomnia"
+      ],
+      "routing": {
+        "priority": "routine",
+        "department": "Психиатрия / Неврология",
+        "specialists": [
+          "Психиатр",
+          "Невролог"
+        ],
+        "required_tests": [
+          "ЭКГ"
+        ],
+        "reasoning": [
+          "Паника без кардиомаркеров"
+        ]
+      },
+      "epicrisis_snippet": "Панические атаки, бессонница, тропонин норма."
+    },
+    {
+      "id": "case-anxiety-02",
+      "title": "Тревожное расстройство / паника (усечённый)",
+      "active_features": [
+        "symptom_anxiety",
+        "symptom_palpitations"
+      ],
+      "routing": {
+        "priority": "routine",
+        "department": "Психиатрия / Неврология",
+        "specialists": [
+          "Психиатр",
+          "Невролог"
+        ],
+        "required_tests": [
+          "ЭКГ"
+        ],
+        "reasoning": [
+          "Паника без кардиомаркеров"
+        ]
+      },
+      "epicrisis_snippet": "Панические атаки, бессонница, тропонин норма. (частичные признаки)"
+    },
+    {
+      "id": "case-anxiety-03",
+      "title": "Тревожное расстройство / паника + слабость",
+      "active_features": [
+        "symptom_anxiety",
+        "symptom_palpitations",
+        "symptom_insomnia",
+        "symptom_weakness"
+      ],
+      "routing": {
+        "priority": "routine",
+        "department": "Психиатрия / Неврология",
+        "specialists": [
+          "Психиатр",
+          "Невролог"
+        ],
+        "required_tests": [
+          "ЭКГ"
+        ],
+        "reasoning": [
+          "Паника без кардиомаркеров"
+        ]
+      },
+      "epicrisis_snippet": "Панические атаки, бессонница, тропонин норма. Слабость."
+    },
+    {
+      "id": "case-extra-01",
+      "title": "Кашель изолированный",
+      "active_features": [
+        "symptom_cough"
+      ],
+      "routing": {
+        "priority": "routine",
+        "department": "Терапия",
+        "specialists": [
+          "Терапия"
+        ],
+        "required_tests": [],
+        "reasoning": [
+          "Синтетический кейс: Кашель изолированный"
+        ]
+      },
+      "epicrisis_snippet": "Кашель изолированный"
+    },
+    {
+      "id": "case-extra-02",
+      "title": "Головная боль изолированная",
+      "active_features": [
+        "symptom_headache"
+      ],
+      "routing": {
+        "priority": "routine",
+        "department": "Неврология",
+        "specialists": [
+          "Неврология"
+        ],
+        "required_tests": [],
+        "reasoning": [
+          "Синтетический кейс: Головная боль изолированная"
+        ]
+      },
+      "epicrisis_snippet": "Головная боль изолированная"
+    },
+    {
+      "id": "case-extra-03",
+      "title": "Боль в спине",
+      "active_features": [
+        "symptom_back_pain"
+      ],
+      "routing": {
+        "priority": "routine",
+        "department": "Терапия",
+        "specialists": [
+          "Терапия"
+        ],
+        "required_tests": [],
+        "reasoning": [
+          "Синтетический кейс: Боль в спине"
+        ]
+      },
+      "epicrisis_snippet": "Боль в спине"
+    },
+    {
+      "id": "case-extra-04",
+      "title": "Артралгия + СОЭ↑",
+      "active_features": [
+        "symptom_joint_pain",
+        "lab_esr_high"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Ревматология",
+        "specialists": [
+          "Ревматология"
+        ],
+        "required_tests": [],
+        "reasoning": [
+          "Синтетический кейс: Артралгия + СОЭ↑"
+        ]
+      },
+      "epicrisis_snippet": "Артралгия + СОЭ↑"
+    },
+    {
+      "id": "case-extra-05",
+      "title": "ПСА↑ плановый",
+      "active_features": [
+        "lab_psa_high"
+      ],
+      "routing": {
+        "priority": "routine",
+        "department": "Урология",
+        "specialists": [
+          "Урология"
+        ],
+        "required_tests": [],
+        "reasoning": [
+          "Синтетический кейс: ПСА↑ плановый"
+        ]
+      },
+      "epicrisis_snippet": "ПСА↑ плановый"
+    },
+    {
+      "id": "case-extra-06",
+      "title": "Брадикардия",
+      "active_features": [
+        "vital_hr_low"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Кардиология",
+        "specialists": [
+          "Кардиология"
+        ],
+        "required_tests": [],
+        "reasoning": [
+          "Синтетический кейс: Брадикардия"
+        ]
+      },
+      "epicrisis_snippet": "Брадикардия"
+    },
+    {
+      "id": "case-extra-07",
+      "title": "Гастроэнтерит",
+      "active_features": [
+        "symptom_diarrhea",
+        "symptom_fever"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Инфекционное",
+        "specialists": [
+          "Инфекционное"
+        ],
+        "required_tests": [],
+        "reasoning": [
+          "Синтетический кейс: Гастроэнтерит"
+        ]
+      },
+      "epicrisis_snippet": "Гастроэнтерит"
+    },
+    {
+      "id": "case-extra-08",
+      "title": "Запор + абдоминалгия",
+      "active_features": [
+        "symptom_constipation",
+        "symptom_abdominal_pain"
+      ],
+      "routing": {
+        "priority": "routine",
+        "department": "Гастроэнтерология",
+        "specialists": [
+          "Гастроэнтерология"
+        ],
+        "required_tests": [],
+        "reasoning": [
+          "Синтетический кейс: Запор + абдоминалгия"
+        ]
+      },
+      "epicrisis_snippet": "Запор + абдоминалгия"
+    },
+    {
+      "id": "case-extra-09",
+      "title": "ОРВИ",
+      "active_features": [
+        "symptom_runny_nose",
+        "symptom_sore_throat"
+      ],
+      "routing": {
+        "priority": "routine",
+        "department": "Терапия",
+        "specialists": [
+          "Терапия"
+        ],
+        "required_tests": [],
+        "reasoning": [
+          "Синтетический кейс: ОРВИ"
+        ]
+      },
+      "epicrisis_snippet": "ОРВИ"
+    },
+    {
+      "id": "case-extra-10",
+      "title": "Нарушение зрения",
+      "active_features": [
+        "symptom_vision"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Офтальмология",
+        "specialists": [
+          "Офтальмология"
+        ],
+        "required_tests": [],
+        "reasoning": [
+          "Синтетический кейс: Нарушение зрения"
+        ]
+      },
+      "epicrisis_snippet": "Нарушение зрения"
+    },
+    {
+      "id": "case-extra-11",
+      "title": "Нарушение слуха",
+      "active_features": [
+        "symptom_hearing"
+      ],
+      "routing": {
+        "priority": "routine",
+        "department": "ЛОР",
+        "specialists": [
+          "ЛОР"
+        ],
+        "required_tests": [],
+        "reasoning": [
+          "Синтетический кейс: Нарушение слуха"
+        ]
+      },
+      "epicrisis_snippet": "Нарушение слуха"
+    },
+    {
+      "id": "case-extra-12",
+      "title": "Судороги",
+      "active_features": [
+        "symptom_seizure"
+      ],
+      "routing": {
+        "priority": "emergency",
+        "department": "Неврология",
+        "specialists": [
+          "Неврология"
+        ],
+        "required_tests": [],
+        "reasoning": [
+          "Синтетический кейс: Судороги"
+        ]
+      },
+      "epicrisis_snippet": "Судороги"
+    },
+    {
+      "id": "case-extra-13",
+      "title": "Коагулопатия + кровотечение",
+      "active_features": [
+        "lab_inr_high",
+        "flag_bleeding"
+      ],
+      "routing": {
+        "priority": "emergency",
+        "department": "Гематология",
+        "specialists": [
+          "Гематология"
+        ],
+        "required_tests": [],
+        "reasoning": [
+          "Синтетический кейс: Коагулопатия + кровотечение"
+        ]
+      },
+      "epicrisis_snippet": "Коагулопатия + кровотечение"
+    },
+    {
+      "id": "case-extra-14",
+      "title": "Гиперкалиемия",
+      "active_features": [
+        "lab_potassium_high"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Нефрология",
+        "specialists": [
+          "Нефрология"
+        ],
+        "required_tests": [],
+        "reasoning": [
+          "Синтетический кейс: Гиперкалиемия"
+        ]
+      },
+      "epicrisis_snippet": "Гиперкалиемия"
+    },
+    {
+      "id": "case-extra-15",
+      "title": "Гипокалиемия",
+      "active_features": [
+        "lab_potassium_low"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Терапия",
+        "specialists": [
+          "Терапия"
+        ],
+        "required_tests": [],
+        "reasoning": [
+          "Синтетический кейс: Гипокалиемия"
+        ]
+      },
+      "epicrisis_snippet": "Гипокалиемия"
+    },
+    {
+      "id": "case-extra-16",
+      "title": "Гипонатриемия",
+      "active_features": [
+        "lab_sodium_low"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Терапия",
+        "specialists": [
+          "Терапия"
+        ],
+        "required_tests": [],
+        "reasoning": [
+          "Синтетический кейс: Гипонатриемия"
+        ]
+      },
+      "epicrisis_snippet": "Гипонатриемия"
+    },
+    {
+      "id": "case-extra-17",
+      "title": "Беременность + боль",
+      "active_features": [
+        "flag_pregnancy",
+        "symptom_abdominal_pain"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Акушерство",
+        "specialists": [
+          "Акушерство"
+        ],
+        "required_tests": [],
+        "reasoning": [
+          "Синтетический кейс: Беременность + боль"
+        ]
+      },
+      "epicrisis_snippet": "Беременность + боль"
+    },
+    {
+      "id": "case-extra-18",
+      "title": "Тромбоцитопения",
+      "active_features": [
+        "lab_platelets_low"
+      ],
+      "routing": {
+        "priority": "urgent",
+        "department": "Гематология",
+        "specialists": [
+          "Гематология"
+        ],
+        "required_tests": [],
+        "reasoning": [
+          "Синтетический кейс: Тромбоцитопения"
+        ]
+      },
+      "epicrisis_snippet": "Тромбоцитопения"
+    },
+    {
+      "id": "case-extra-19",
+      "title": "Тромбоцитоз",
+      "active_features": [
+        "lab_platelets_high"
+      ],
+      "routing": {
+        "priority": "routine",
+        "department": "Гематология",
+        "specialists": [
+          "Гематология"
+        ],
+        "required_tests": [],
+        "reasoning": [
+          "Синтетический кейс: Тромбоцитоз"
+        ]
+      },
+      "epicrisis_snippet": "Тромбоцитоз"
+    },
+    {
+      "id": "case-extra-20",
+      "title": "Нейтропения + лихорадка",
+      "active_features": [
+        "lab_wbc_low",
+        "symptom_fever"
+      ],
+      "routing": {
+        "priority": "emergency",
+        "department": "Гематология",
+        "specialists": [
+          "Гематология"
+        ],
+        "required_tests": [],
+        "reasoning": [
+          "Синтетический кейс: Нейтропения + лихорадка"
+        ]
+      },
+      "epicrisis_snippet": "Нейтропения + лихорадка"
+    }
+  ]
+}

@@ -7,7 +7,18 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
     try {
       const raw = localStorage.getItem('sparrow_user')
-      return raw ? JSON.parse(raw) : null
+      if (!raw) return null
+      const session = JSON.parse(raw)
+      // старые сессии без id — подтянуть из stub-списка
+      if (!session.id && session.login) {
+        const found = STUB_USERS.find((u) => u.login === session.login)
+        if (found) {
+          session.id = found.id
+          session.name = found.name
+          localStorage.setItem('sparrow_user', JSON.stringify(session))
+        }
+      }
+      return session
     } catch {
       return null
     }
@@ -21,7 +32,12 @@ export function AuthProvider({ children }) {
     if (!found) {
       return { ok: false, error: 'Неверный логин или пароль (stub)' }
     }
-    const session = { login: found.login, role: found.role, name: found.name }
+    const session = {
+      login: found.login,
+      role: found.role,
+      name: found.name,
+      id: found.id,
+    }
     localStorage.setItem('sparrow_user', JSON.stringify(session))
     setUser(session)
     return { ok: true }
