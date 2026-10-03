@@ -19,7 +19,21 @@ Certainty = Literal["certain", "possible"]
 
 @dataclass(frozen=True)
 class MedicalFinding:
-    """A possible abnormal finding, with a quote and offsets in the input."""
+    """Одно найденное в тексте медицинского заключения отклонение или изменение.
+
+    Атрибуты:
+        text: Точное слово или фрагмент исходного текста, распознанный как находка.
+        sentence: Предложение исходного текста, в котором найдена находка.
+        category: Тип находки, например ``structural_finding`` или ``size_change``.
+        certainty: ``"certain"`` для утверждения без маркеров сомнения;
+            ``"possible"`` для находки, описанной предположительно.
+        start: Начальный индекс находки в исходной строке (включительно).
+        end: Конечный индекс находки в исходной строке (не включительно).
+
+    Индексы ``start`` и ``end`` отсчитываются от нуля и используют диапазон
+    ``[start, end)``, поэтому ``text[start:end]`` возвращает ``text`` находки.
+    Класс неизменяемый: после создания его поля нельзя переназначить.
+    """
 
     text: str
     sentence: str
@@ -138,7 +152,7 @@ def _is_negated(clause: str, start: int, end: int) -> bool:
 
 
 def _is_normal_context(clause: str, start: int, end: int) -> bool:
-    nearby = clause[max(0, start - 50):min(len(clause), end + 50)]
+    nearby = clause[max(0, start - 50) : min(len(clause), end + 50)]
     return bool(_NORMAL_CONTEXT.search(nearby))
 
 
@@ -146,7 +160,7 @@ def _clause_ranges(sentence: str, start: int) -> list[tuple[int, int]]:
     ranges: list[tuple[int, int]] = []
     cursor = 0
     for boundary in _CLAUSE_BREAK.finditer(sentence):
-        if sentence[cursor:boundary.start()].strip():
+        if sentence[cursor : boundary.start()].strip():
             ranges.append((start + cursor, start + boundary.start()))
         cursor = boundary.end()
     if sentence[cursor:].strip():
@@ -174,15 +188,17 @@ def extract_findings(text: str) -> list[MedicalFinding]:
 
     findings: list[MedicalFinding] = []
     for sentence in doc.sents:
-        sentence_text = text[sentence.start:sentence.stop]
+        sentence_text = text[sentence.start : sentence.stop]
         sentence_possible = bool(_UNCERTAINTY.search(sentence_text))
         for clause_start, clause_end in _clause_ranges(sentence_text, sentence.start):
             clause = text[clause_start:clause_end]
             clause_tokens = [
                 token
                 for token in doc.tokens
-                if clause_start <= token.start and token.stop <= clause_end
-                and token.lemma and re.search(r"\w", token.text)
+                if clause_start <= token.start
+                and token.stop <= clause_end
+                and token.lemma
+                and re.search(r"\w", token.text)
             ]
             possible = sentence_possible or bool(_UNCERTAINTY.search(clause))
             seen: set[tuple[int, int, str]] = set()
@@ -208,7 +224,7 @@ def extract_findings(text: str) -> list[MedicalFinding]:
                     seen.add(key)
                     findings.append(
                         MedicalFinding(
-                            text=text[token.start:token.stop],
+                            text=text[token.start : token.stop],
                             sentence=sentence_text.strip(),
                             category=rule.category,
                             certainty="possible" if possible else "certain",
