@@ -16,6 +16,9 @@ eggs/
 .eggs/
 lib/
 lib64/
+# keep frontend helpers (Python packaging lib/ ignore is too broad)
+!front/src/lib/
+!front/src/lib/**
 parts/
 sdist/
 var/
