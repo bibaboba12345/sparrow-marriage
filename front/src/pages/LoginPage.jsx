@@ -17,8 +17,16 @@ export default function LoginPage() {
       setError(result.error)
       return
     }
-    const role = STUB_USERS.find((u) => u.login === loginName.trim())?.role
-    navigate(role === 'admin' ? '/admin' : '/client')
+    const role = result.role || 'client'
+    const dest =
+      role === 'admin'
+        ? '/admin'
+        : role === 'doctor'
+          ? '/doctor'
+          : role === 'coordinator'
+            ? '/coordinator'
+            : '/patient'
+    navigate(dest)
   }
 
   return (
@@ -37,7 +45,7 @@ export default function LoginPage() {
               autoComplete="username"
               value={loginName}
               onChange={(e) => setLoginName(e.target.value)}
-              placeholder="client или admin"
+              placeholder="admin"
             />
           </label>
           <label className="field">
@@ -61,13 +69,14 @@ export default function LoginPage() {
           <ul>
             {STUB_USERS.map((u) => (
               <li key={u.login}>
-                <code>{u.login}</code> / <code>{u.password}</code> → {u.role}
-                {u.role === 'client' ? (
-                  <>
-                    {' '}
-                    · id <code>{u.id}</code>
-                  </>
-                ) : null}
+                <code>{u.login}</code> / <code>{u.password}</code> →{' '}
+                {u.role === 'admin'
+                  ? '/admin'
+                  : u.role === 'doctor'
+                    ? '/doctor'
+                    : u.role === 'coordinator'
+                      ? '/coordinator'
+                      : '/patient'}
               </li>
             ))}
           </ul>

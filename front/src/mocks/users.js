@@ -1,4 +1,4 @@
-/** Stub credentials — no real auth. У каждого client ровно один стабильный id. */
+/** Stub credentials — no real auth. */
 export const STUB_USERS = [
   {
     login: 'client',
@@ -8,17 +8,24 @@ export const STUB_USERS = [
     name: 'Иванова А.П.',
   },
   {
+    login: 'doctor',
+    password: 'doctor',
+    role: 'doctor',
+    id: 'doc-smirnova',
+    name: 'Смирнова О.В.',
+  },
+  {
+    login: 'coord',
+    password: 'coord',
+    role: 'coordinator',
+    id: 'coord-1',
+    name: 'Координатор ВДНХ',
+  },
+  {
     login: 'admin',
     password: 'admin',
     role: 'admin',
     id: 'admin-petrov',
     name: 'Петров В.С.',
-  },
-  {
-    login: 'doctor',
-    password: '1234',
-    role: 'client',
-    id: 'pat-sidorova',
-    name: 'Сидорова М.К.',
   },
 ]

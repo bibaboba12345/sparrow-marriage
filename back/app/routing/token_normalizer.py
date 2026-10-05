@@ -33,39 +33,20 @@ SYSTEM_PROMPT = """Ты клинический нормализатор токе
 
 
 def _llm_client():
-    from openai import OpenAI
+    from ..llm_client import llm_configured, make_openai_client
 
-    if os.getenv("OPENROUTER_API_KEY"):
-        return OpenAI(
-            api_key=os.environ["OPENROUTER_API_KEY"],
-            base_url=os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1"),
-            default_headers={
-                "HTTP-Referer": os.getenv("OPENROUTER_SITE_URL", "http://localhost:5173"),
-                "X-Title": os.getenv("OPENROUTER_APP_NAME", "Sparrow Route"),
-            },
-            timeout=float(os.getenv("LLM_TIMEOUT_SEC", "90")),
-        ), os.getenv("OPENROUTER_MODEL", "openrouter/free")
-    if os.getenv("DEEPSEEK_API_KEY"):
-        return OpenAI(
-            api_key=os.environ["DEEPSEEK_API_KEY"],
-            base_url=os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com"),
-            timeout=float(os.getenv("LLM_TIMEOUT_SEC", "90")),
-        ), os.getenv("DEEPSEEK_MODEL", "deepseek-chat")
-    if os.getenv("OPENAI_API_KEY"):
-        return OpenAI(
-            api_key=os.environ["OPENAI_API_KEY"],
-            base_url=os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1"),
-            timeout=float(os.getenv("LLM_TIMEOUT_SEC", "90")),
-        ), os.getenv("OPENAI_MODEL", "gpt-4o-mini")
-    return None, None
+    if not llm_configured():
+        return None, None
+    try:
+        return make_openai_client(timeout=float(os.getenv("LLM_TIMEOUT_SEC", "90")))
+    except Exception:
+        return None, None
 
 
 def llm_configured() -> bool:
-    return bool(
-        os.getenv("OPENROUTER_API_KEY")
-        or os.getenv("DEEPSEEK_API_KEY")
-        or os.getenv("OPENAI_API_KEY")
-    )
+    from ..llm_client import llm_configured as _cfg
+
+    return _cfg()
 
 
 def _extract_json(text: str) -> dict[str, Any]:
@@ -180,18 +161,22 @@ def normalize_tokens(
     from ..llm_retry import with_retries
 
     def _once() -> dict[str, Any]:
+        from ..llm_client import chat_completion_kwargs
+
         completion = client.chat.completions.create(
-            model=model,
-            temperature=0,
-            max_tokens=int(os.getenv("STRUCTURE_MAX_TOKENS", "2048")),
-            messages=[
-                {"role": "system", "content": SYSTEM_PROMPT},
-                {
-                    "role": "user",
-                    "content": "Отфильтруй токены (только отклонения) и верни JSON:\n"
-                    + json.dumps(user_payload, ensure_ascii=False),
-                },
-            ],
+            **chat_completion_kwargs(
+                max_tokens=int(os.getenv("STRUCTURE_MAX_TOKENS", "2048")),
+                model=model,
+                temperature=0,
+                messages=[
+                    {"role": "system", "content": SYSTEM_PROMPT},
+                    {
+                        "role": "user",
+                        "content": "Отфильтруй токены (только отклонения) и верни JSON:\n"
+                        + json.dumps(user_payload, ensure_ascii=False),
+                    },
+                ],
+            )
         )
         choices = getattr(completion, "choices", None)
         if not choices:

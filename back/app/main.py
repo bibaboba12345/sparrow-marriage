@@ -7,6 +7,8 @@ Sparrow Route — FastAPI backend (SQLite).
   uvicorn app.main:app --reload --port 8000
 """
 
+import os
+
 from fastapi import Depends, FastAPI, File, HTTPException, Query, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
@@ -14,6 +16,7 @@ from sqlalchemy.orm import Session
 from . import crud, models, schemas  # noqa: F401
 from .db import Base, engine, ensure_schema, get_db
 from .extractors import ExtractError, StructureError, extract_bytes, llm_configured, structure_text
+from .routing.journey_api import router as journey_router
 
 try:
     from dotenv import load_dotenv
@@ -25,7 +28,10 @@ except ImportError:
 Base.metadata.create_all(bind=engine)
 ensure_schema()
 
-app = FastAPI(title="Sparrow Route API", version="0.1.0")
+# Default 100 MiB; override via MAX_UPLOAD_MB
+MAX_UPLOAD_BYTES = int(float(os.getenv("MAX_UPLOAD_MB", "100")) * 1024 * 1024)
+
+app = FastAPI(title="Sparrow Route API", version="0.2.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -35,10 +41,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(journey_router)
+
 
 @app.get("/health")
 def health():
-    return {"ok": True, "llm_configured": llm_configured()}
+    return {
+        "ok": True,
+        "llm_configured": llm_configured(),
+        "max_upload_mb": MAX_UPLOAD_BYTES // (1024 * 1024),
+    }
 
 
 @app.post("/api/v1/upload", response_model=schemas.ExtractOut)
@@ -51,9 +63,28 @@ async def upload_document(
 ):
     """Извлечь текст из PDF / DOCX / TXT (+ опционально LLM-структуризация)."""
     filename = file.filename or "upload.bin"
+    max_mb = MAX_UPLOAD_BYTES // (1024 * 1024)
+
+    # Early reject by Content-Length when client sends it
+    cl = file.headers.get("content-length") if file.headers else None
+    if cl:
+        try:
+            if int(cl) > MAX_UPLOAD_BYTES:
+                raise HTTPException(
+                    status_code=413,
+                    detail=f"Файл слишком большой (лимит {max_mb} МБ)",
+                )
+        except ValueError:
+            pass
+
     data = await file.read()
     if not data:
         raise HTTPException(status_code=400, detail="Empty file")
+    if len(data) > MAX_UPLOAD_BYTES:
+        raise HTTPException(
+            status_code=413,
+            detail=f"Файл слишком большой: {len(data) / (1024 * 1024):.1f} МБ (лимит {max_mb} МБ)",
+        )
     try:
         result = extract_bytes(data, filename)
     except ExtractError as exc:
@@ -66,7 +97,7 @@ async def upload_document(
     if structure:
         if not llm_configured():
             warnings.append(
-                "LLM structure skipped: нет OPENROUTER_API_KEY / DEEPSEEK_API_KEY в back/.env"
+                "LLM structure skipped: нет AMVERACLOUD_API_KEY / OPENROUTER_API_KEY / DEEPSEEK_API_KEY в back/.env"
             )
         else:
             try:
@@ -111,7 +142,7 @@ def structure_raw(
     if not llm_configured():
         raise HTTPException(
             status_code=503,
-            detail="Нет LLM-ключа: OPENROUTER_API_KEY / DEEPSEEK_API_KEY / OPENAI_API_KEY в .env",
+            detail="Нет LLM-ключа: AMVERACLOUD_API_KEY / OPENROUTER_API_KEY / DEEPSEEK_API_KEY / OPENAI_API_KEY в .env",
         )
     try:
         doc = structure_text(text, filename=payload.get("filename"))
@@ -122,14 +153,10 @@ def structure_raw(
 
 @app.post("/api/v1/routes", response_model=schemas.RouteOut, status_code=201)
 def create_route(payload: schemas.RouteCreate, db: Session = Depends(get_db)):
-    """Создать route; если routing-поля пустые — Decider (vector match + LLM)."""
+    """Создать route/протокол. Decider только при явном decision_json.force_decide."""
     data = payload
-    needs_decide = (
-        not (payload.department or "").strip()
-        or not (payload.reasoning or [])
-        or (payload.decision_json or {}).get("force_decide")
-    )
-    if needs_decide and payload.documents:
+    force_decide = bool((payload.decision_json or {}).get("force_decide"))
+    if force_decide and payload.documents:
         from .routing.decider import decide_from_documents
 
         decision = decide_from_documents(payload.documents, raw_input=payload.raw_input)
@@ -148,7 +175,47 @@ def create_route(payload: schemas.RouteCreate, db: Session = Depends(get_db)):
                 "approved": False,
             }
         )
-    return crud.create_route(db, data)
+    else:
+        dj = dict(payload.decision_json or {})
+        dj.pop("force_decide", None)
+        if "decider_source" not in dj:
+            dj["decider_source"] = "skipped"
+        data = payload.model_copy(update={"decision_json": dj})
+    route = crud.create_route(db, data)
+    # Auto-create clinical journeys from pathology / clinical tokens
+    dj = route.decision_json or {}
+    clinical = dj.get("clinical_tokens") or dj.get("tokens") or {}
+    pathology = dj.get("pathology") or {}
+    journey_info = None
+    if clinical or (pathology.get("matched") if isinstance(pathology, dict) else None):
+        from .routing import journey_engine as je
+
+        try:
+            journey_info = je.create_journeys_from_protocol(
+                db,
+                patient_id=route.patient_id,
+                patient_name=route.patient_name,
+                clinical=clinical if isinstance(clinical, dict) else {},
+                pathology=pathology if isinstance(pathology, dict) else {},
+                source_route_id=route.id,
+            )
+            # attach summary onto decision_json for admin UI
+            dj = dict(route.decision_json or {})
+            dj["journey"] = {
+                "triggered": journey_info.get("triggered"),
+                "reason": journey_info.get("reason"),
+                "matches": journey_info.get("matches") or [],
+                "journey_ids": [j.id for j in journey_info.get("journeys") or []],
+            }
+            route.decision_json = dj
+            db.add(route)
+            db.commit()
+            db.refresh(route)
+        except Exception as exc:  # noqa: BLE001 — don't fail save
+            import logging
+
+            logging.getLogger(__name__).warning("journey auto-create failed: %s", exc)
+    return route
 
 
 @app.get("/api/v1/routing/features")
@@ -164,76 +231,56 @@ def routing_features():
 
 @app.post("/api/v1/routing/tokenize")
 def routing_tokenize(payload: dict):
-    """Split text → LLM deviation filter → symptoms / features (без match/decider)."""
-    from .routing.token_normalizer import collect_text_tokens, normalize_tokens
-    from .routing.vectorize import split_complaint_tokens, vectorize_important
+    """Strict protocol tokenize: patient + catalog clinical tokens; rest → junk."""
+    from .routing.protocol_tokenizer import (
+        ProtocolTokenError,
+        enrich_tokenize_result,
+        non_null_token_list,
+        tokenize_protocol_text,
+        tokens_as_important,
+    )
 
     text = (payload or {}).get("text") or ""
     if not str(text).strip():
         raise HTTPException(status_code=400, detail="text is required")
-    use_llm = bool((payload or {}).get("normalize", True))
+    filename = (payload or {}).get("filename")
 
-    tokens = collect_text_tokens(extra_text=text)
-    if not tokens:
-        tokens = split_complaint_tokens(text)
+    try:
+        out = tokenize_protocol_text(text, filename=filename)
+    except ProtocolTokenError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
 
-    norm = None
-    if use_llm and tokens:
-        norm = normalize_tokens(tokens, context=text)
+    patient = out.patient
+    enriched = enrich_tokenize_result(text, out)
+    clinical = enriched["clinical"]
+    nonzero = non_null_token_list(patient, clinical)
+    important = tokens_as_important(patient, clinical)
+    text_tokens = [f"{x['key']}={x['value']}" for x in nonzero]
+    # Merge patient into tokens dict for UI convenience
+    tokens_out = {**patient.model_dump(), **clinical}
 
-    if norm and norm.get("source") == "llm":
-        important = {
-            "symptoms": list(norm.get("symptoms") or []),
-            "red_flags": list(norm.get("red_flags") or []),
-            "diagnoses": [],
-            "labs": [],
-            "medications": [],
-            "vitals": {},
-            "clinical_snippets": [],
-        }
-        vec = vectorize_important(
-            {**important, "free_text": [text]},
-            alias_free_text=False,
-            seed_active=norm.get("active_features") or [],
-        )
-        return {
-            "text_tokens": norm.get("text_tokens") or tokens,
-            "important": important,
-            "active_features": vec["active_features"],
-            "matched_phrases": vec.get("matched_phrases") or [],
-            "token_filter": {
-                "source": norm.get("source"),
-                "model": norm.get("model"),
-                "dropped": norm.get("dropped") or [],
-                "symptoms": norm.get("symptoms") or [],
-                "red_flags": norm.get("red_flags") or [],
-            },
-            "features_version": vec["features_version"],
-        }
-
-    # Heuristic split + alias (нет ключа / ошибка LLM)
-    vec = vectorize_important({"text": text, "free_text": [text]})
     return {
-        "text_tokens": vec.get("text_tokens") or tokens,
-        "important": {
-            "symptoms": list(vec.get("text_tokens") or tokens),
-            "red_flags": [],
-            "diagnoses": [],
-            "labs": [],
-            "medications": [],
-            "vitals": vec.get("parsed_vitals") or {},
-            "clinical_snippets": [],
-        },
-        "active_features": vec["active_features"],
-        "matched_phrases": vec.get("matched_phrases") or [],
+        "patient": patient.model_dump(),
+        "tokens": tokens_out,
+        "clinical_tokens": clinical,
+        "junk": out.junk,
+        "text_tokens": text_tokens,
+        "important": important,
+        "active_features": [k for k, v in clinical.items() if v == 1 or v is True],
+        "matched_phrases": [],
+        "recommendation": enriched["recommendation"],
+        "by_organ": enriched["by_organ"],
+        "organs_present": enriched["organs_present"],
+        "pathology": enriched["pathology"],
+        "patient_alert": enriched.get("patient_alert"),
         "token_filter": {
-            "source": (norm or {}).get("source") or "heuristic",
-            "model": (norm or {}).get("model"),
-            "dropped": (norm or {}).get("dropped") or [],
-            "symptoms": [],
-            "red_flags": [],
+            "source": out.source,
+            "model": out.model,
+            "dropped": [{"token": j, "reason": "junk"} for j in out.junk],
+            "mode": "patient_plus_catalog",
+            "catalog_hits": len(clinical),
         },
-        "features_version": vec["features_version"],
+        "features_version": None,
     }
 
 
@@ -274,10 +321,20 @@ def routing_match(payload: dict):
 def list_routes(
     patient_id: str | None = Query(None, description="Фильтр по patient_id"),
     approved: bool | None = Query(None, description="true / false / omit"),
+    priority: str | None = Query(
+        None,
+        description="emergency | urgent | routine",
+        pattern="^(emergency|urgent|routine)$",
+    ),
     db: Session = Depends(get_db),
 ):
-    """Admin-очередь с фильтрами: по юзеру и approved."""
-    return crud.list_routes(db, patient_id=patient_id, approved=approved)
+    """Admin-очередь с фильтрами: юзер, approved, срочность."""
+    return crud.list_routes(
+        db,
+        patient_id=patient_id,
+        approved=approved,
+        priority=priority,
+    )
 
 
 @app.get("/api/v1/patients", response_model=list[schemas.PatientOut])

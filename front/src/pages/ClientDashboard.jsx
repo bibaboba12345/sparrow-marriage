@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { processDocument, routePatient, tokenizeText } from '../api/routesApi'
+import { MAX_UPLOAD_MB, processDocument, routePatient, tokenizeText } from '../api/routesApi'
 import { useAuth } from '../auth/AuthContext'
 import DocumentsPanel from '../components/DocumentsPanel'
 import RouteCard from '../components/RouteCard'
@@ -212,7 +212,7 @@ export default function ClientDashboard() {
             <p className="muted">
               {extracting
                 ? `${STAGE_LABEL[stage] || stage || 'Обработка'} · ${elapsedSec}с`
-                : 'Каждый файл → extract → LLM → document'}
+                : `Каждый файл → extract → LLM → document · лимит ${MAX_UPLOAD_MB} МБ`}
             </p>
             <input
               ref={inputRef}

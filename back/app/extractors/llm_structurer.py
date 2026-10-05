@@ -1,4 +1,4 @@
-"""LLM-структуризатор текста документа → StructuredDocument (OpenRouter / DeepSeek / OpenAI)."""
+"""LLM-структуризатор текста документа → StructuredDocument (Amvera / OpenRouter / …)."""
 
 from __future__ import annotations
 
@@ -7,6 +7,7 @@ import os
 import re
 from typing import Any
 
+from ..llm_client import chat_completion_kwargs, llm_configured, make_openai_client
 from .structure_schema import StructuredDocument
 
 SYSTEM_PROMPT = """Ты медицинский парсер выписок и лабораторных бланков.
@@ -48,39 +49,6 @@ SYSTEM_PROMPT = """Ты медицинский парсер выписок и л
 
 class StructureError(Exception):
     pass
-
-
-def _resolve_llm() -> tuple[str, str, str]:
-    """Returns (api_key, base_url, model). Priority: OPENROUTER → DEEPSEEK → OPENAI."""
-    if os.getenv("OPENROUTER_API_KEY"):
-        return (
-            os.environ["OPENROUTER_API_KEY"],
-            os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1"),
-            os.getenv("OPENROUTER_MODEL", "openrouter/free"),
-        )
-    if os.getenv("DEEPSEEK_API_KEY"):
-        return (
-            os.environ["DEEPSEEK_API_KEY"],
-            os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com"),
-            os.getenv("DEEPSEEK_MODEL", "deepseek-chat"),
-        )
-    if os.getenv("OPENAI_API_KEY"):
-        return (
-            os.environ["OPENAI_API_KEY"],
-            os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1"),
-            os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
-        )
-    raise StructureError(
-        "Нет API-ключа. Добавь OPENROUTER_API_KEY / DEEPSEEK_API_KEY / OPENAI_API_KEY в back/.env"
-    )
-
-
-def llm_configured() -> bool:
-    return bool(
-        os.getenv("OPENROUTER_API_KEY")
-        or os.getenv("DEEPSEEK_API_KEY")
-        or os.getenv("OPENAI_API_KEY")
-    )
 
 
 def _message_text(message: Any) -> str:
@@ -157,28 +125,16 @@ def structure_text(raw_text: str, *, filename: str | None = None) -> StructuredD
     if not raw_text or not raw_text.strip():
         raise StructureError("Empty text for structuring")
 
-    api_key, base_url, model = _resolve_llm()
-
     try:
-        from openai import OpenAI
+        client, model = make_openai_client(
+            timeout=float(os.getenv("LLM_TIMEOUT_SEC", "120"))
+        )
     except ImportError as exc:
         raise StructureError("Пакет openai не установлен (pip install openai)") from exc
+    except RuntimeError as exc:
+        raise StructureError(str(exc)) from exc
 
     from ..llm_retry import with_retries
-
-    default_headers = {}
-    if "openrouter.ai" in base_url:
-        default_headers = {
-            "HTTP-Referer": os.getenv("OPENROUTER_SITE_URL", "http://localhost:5173"),
-            "X-Title": os.getenv("OPENROUTER_APP_NAME", "Sparrow Route"),
-        }
-
-    client = OpenAI(
-        api_key=api_key,
-        base_url=base_url,
-        default_headers=default_headers or None,
-        timeout=float(os.getenv("LLM_TIMEOUT_SEC", "120")),
-    )
     user_blob = raw_text.strip()
     if filename:
         user_blob = f"Файл: {filename}\n\n{user_blob}"
@@ -186,15 +142,15 @@ def structure_text(raw_text: str, *, filename: str | None = None) -> StructuredD
     if len(user_blob) > max_chars:
         user_blob = user_blob[:max_chars] + "\n\n[... truncated ...]"
 
-    kwargs: dict[str, Any] = {
-        "model": model,
-        "temperature": 0.1,
-        "max_tokens": int(os.getenv("STRUCTURE_MAX_TOKENS", "2048")),
-        "messages": [
+    kwargs: dict[str, Any] = chat_completion_kwargs(
+        max_tokens=int(os.getenv("STRUCTURE_MAX_TOKENS", "2048")),
+        model=model,
+        temperature=0.1,
+        messages=[
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": f"Разбери документ в JSON:\n\n{user_blob}"},
         ],
-    }
+    )
 
     def _once() -> Any:
         try:

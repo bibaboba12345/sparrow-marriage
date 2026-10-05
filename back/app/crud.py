@@ -168,12 +168,15 @@ def list_routes(
     *,
     patient_id: str | None = None,
     approved: bool | None = None,
+    priority: str | None = None,
 ) -> list[RouteRecord]:
     stmt = select(RouteRecord)
     if patient_id:
         stmt = stmt.where(RouteRecord.patient_id == patient_id)
     if approved is not None:
         stmt = stmt.where(RouteRecord.approved.is_(approved))
+    if priority:
+        stmt = stmt.where(RouteRecord.priority == priority)
     stmt = stmt.order_by(RouteRecord.created_at.desc())
     return list(db.scalars(stmt).all())
 

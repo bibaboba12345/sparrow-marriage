@@ -1,38 +1,33 @@
 # Front (Sparrow Route)
 
-React-фронт, ходит в FastAPI/SQLite через Vite proxy.
+React-фронт → FastAPI через Vite proxy `/api` → `:8000`.
 
 ## Запуск
 
-Терминал 1 — бэк:
 ```bash
-cd back
-source .venv/bin/activate
-uvicorn app.main:app --reload --port 8000
-# по желанию: curl -X POST http://localhost:8000/api/v1/seed
+# terminal 1
+cd back && source .venv/bin/activate && uvicorn app.main:app --reload --port 8000
+
+# terminal 2
+cd front && npm install && npm run dev
 ```
 
-Терминал 2 — фронт:
-```bash
-cd front
-npm install
-npm run dev
-```
-
-http://localhost:5173 · proxy `/api` → `:8000`
+http://localhost:5173
 
 ## Stub-логины
 
-| Логин  | Пароль | Роль   |
-|--------|--------|--------|
-| client | client | client |
-| admin  | admin  | admin  |
-| doctor | 1234   | client |
+| Логин | Пароль | Куда |
+|-------|--------|------|
+| client | client | /patient |
+| doctor | doctor | /doctor |
+| coord | coord | /coordinator |
+| admin | admin | /admin (+ ссылки на все экраны) |
 
-## Что подключено к БД
+## Экраны воронки
 
-- **Client** `POST /api/v1/routes` — raw_input + эвристика → запись в SQLite
-- **Admin** `GET /api/v1/routes` — все записи
-- **Admin** `PATCH /api/v1/routes/{id}` — HITL-правки
+- **Пациент** — маршруты, колокольчик, запись на stub-слоты, демо-часы
+- **Врач** — баннер маршрута, обязательная тактика
+- **Координатор** — звонки / госпитализация
+- **Воронка** (`/manager`) — конверсия диагностического потока
 
-Клиент API: `src/api/routesApi.js`
+API-клиент: `src/api/journeyApi.js`

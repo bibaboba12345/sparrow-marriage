@@ -125,11 +125,6 @@ export default function DocumentsPanel({ documents = [], collapsible = true }) {
             <span className="doc-index">#{index + 1}</span>
             <span className="doc-name">{doc.filename || 'document'}</span>
             <span className="pill">{doc.filetype || 'text'}</span>
-            {doc.structureModel || doc.structure_model ? (
-              <span className="muted doc-model">
-                {doc.structureModel || doc.structure_model}
-              </span>
-            ) : null}
           </summary>
 
           {doc.summary ? <p className="doc-summary-text">{doc.summary}</p> : null}

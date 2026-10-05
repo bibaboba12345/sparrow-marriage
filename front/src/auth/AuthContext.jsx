@@ -40,7 +40,7 @@ export function AuthProvider({ children }) {
     }
     localStorage.setItem('sparrow_user', JSON.stringify(session))
     setUser(session)
-    return { ok: true }
+    return { ok: true, role: found.role }
   }
 
   function logout() {

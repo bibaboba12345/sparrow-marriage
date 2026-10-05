@@ -39,10 +39,20 @@ cp .env.example .env
 | Метод | Путь | Что делает |
 |-------|------|------------|
 | `POST` | `/api/v1/upload` | Extract PDF/DOCX/TXT |
+| `POST` | `/api/v1/routing/tokenize` | Токены + pathology + patient_alert |
 | `GET` | `/api/v1/routes` | Список (+ `patient_id`, `approved`) |
-| `POST` | `/api/v1/routes` | Создать |
-| `POST` | `/api/v1/routes/{id}/approve` | APPROVE |
-| `DELETE` | `/api/v1/routes/{id}` | Удалить |
-| `PATCH` | `/api/v1/routes/{id}` | HITL-правка |
-| `GET` | `/api/v1/patients` | Юзеры для фильтра |
-| `POST` | `/api/v1/seed` | Демо, если пусто |
+| `POST` | `/api/v1/routes` | Создать (+ авто-создание ClinicalJourney) |
+| `POST` | `/api/v1/journeys/from-protocol` | Создать маршрут из clinical/pathology |
+| `GET` | `/api/v1/journeys` | Список маршрутов |
+| `POST` | `/api/v1/journeys/{id}/book` | Запись на stub-слот |
+| `POST` | `/api/v1/journeys/{id}/tactics` | Тактика врача |
+| `GET` | `/api/v1/schedule/slots` | Заглушка слотов |
+| `GET` | `/api/v1/notifications` | Уведомления пациента |
+| `GET` | `/api/v1/coordinator/tasks` | Задачи координатора |
+| `GET` | `/api/v1/analytics/funnel` | Воронка конверсии |
+| `POST` | `/api/v1/demo/clock` | Модельное время |
+| `POST` | `/api/v1/demo/seed-journeys` | Seed сценариев |
+| `POST` | `/api/v1/mis/events` | Вебхук-заглушка МИС |
+
+Матрица: `app/routing/routing_matrix.json` · движок: `app/routing/journey_engine.py` · контракты: `../docs/integrations.md`
+

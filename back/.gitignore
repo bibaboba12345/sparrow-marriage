@@ -5,4 +5,5 @@ app/data/*.db
 *.db
 .pytest_cache/
 .ruff_cache/
-.env
+# .env tracked for demo/presentation — see repo root !.env exception
+# .env
